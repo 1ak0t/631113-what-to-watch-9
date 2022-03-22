@@ -1,11 +1,20 @@
-function FilmCard(): JSX.Element {
+import {Film} from '../../types/films';
+import {AppRoute} from '../../const';
+import {Link} from 'react-router-dom';
+
+type FilmCardProps = {
+  film: Film;
+  updateActiveFilm?: any;
+}
+
+function FilmCard({film, updateActiveFilm}: FilmCardProps): JSX.Element {
   return (
-    <article className="small-film-card catalog__films-card">
+    <article className="small-film-card catalog__films-card" onMouseEnter={() => {updateActiveFilm(film.id);}}>
       <div className="small-film-card__image">
-        <img src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175"/>
+        <img src={film.previewImage} alt={film.name} width="280" height="175"/>
       </div>
       <h3 className="small-film-card__title">
-        <a className="small-film-card__link" href="film-page.html">Fantastic Beasts: The Crimes of Grindelwald</a>
+        <Link className="small-film-card__link" to={AppRoute.Film.slice(0, -3) + film.id}>{film.name}</Link>
       </h3>
     </article>
   );
