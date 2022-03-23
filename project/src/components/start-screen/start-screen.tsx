@@ -1,19 +1,20 @@
-import FilmCard from '../film-card/film-card';
+import ListOfFilms from '../list-of-films/list-of-films';
+import {Film, Films} from '../../types/films';
+import {Link} from 'react-router-dom';
+import {AppRoute} from '../../const';
 
 type StartScreenProps = {
-  filmsCount: number;
-  promoFilmName: string;
-  promoFilmGenre: string;
-  promoFilmYear: number;
+  films: Films;
+  filmsOnPage: number;
+  promo: Film;
 }
 
-function StartScreen({filmsCount, promoFilmName, promoFilmGenre, promoFilmYear}:  StartScreenProps): JSX.Element {
-  const createListOfFilms: JSX.Element[] = Array.from({length: filmsCount}, (): JSX.Element => (<FilmCard />));
+function StartScreen({films, filmsOnPage, promo}: StartScreenProps): JSX.Element {
   return (
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel"/>
+          <img src={promo.backgroundImage} alt={promo.name}/>
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -29,9 +30,11 @@ function StartScreen({filmsCount, promoFilmName, promoFilmGenre, promoFilmYear}:
 
           <ul className="user-block">
             <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-              </div>
+              <Link to={AppRoute.MyList}>
+                <div className="user-block__avatar">
+                  <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
+                </div>
+              </Link>
             </li>
             <li className="user-block__item">
               <a className="user-block__link">Sign out</a>
@@ -42,14 +45,14 @@ function StartScreen({filmsCount, promoFilmName, promoFilmGenre, promoFilmYear}:
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327"/>
+              <img src={promo.posterImage} alt={promo.name} width="218" height="327"/>
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{promoFilmName}</h2>
+              <h2 className="film-card__title">{promo.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{promoFilmGenre}</span>
-                <span className="film-card__year">{promoFilmYear}</span>
+                <span className="film-card__genre">{promo.genre}</span>
+                <span className="film-card__year">{promo.released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -72,51 +75,7 @@ function StartScreen({filmsCount, promoFilmName, promoFilmGenre, promoFilmYear}:
       </section>
 
       <div className="page-content">
-        <section className="catalog">
-          <h2 className="catalog__title visually-hidden">Catalog</h2>
-
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="#" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
-
-          <div className="catalog__films-list">
-            {createListOfFilms}
-          </div>
-
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
-        </section>
-
+        <ListOfFilms films={films} filmsOnPage={filmsOnPage} isMore />
         <footer className="page-footer">
           <div className="logo">
             <a className="logo__link logo__link--light">

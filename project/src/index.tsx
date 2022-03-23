@@ -1,21 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
+import {films, similarFilms} from './mocks/films';
+import {promo} from './mocks/promo';
+import {favorites} from './mocks/favorites';
 
 const Settings = {
-  FILMS_ON_PAGE: 20,
-  PROMO_FILM_NAME: 'The Grand Budapest Hotel',
-  PROMO_FILM_GENRE: 'Drama',
-  PROMO_FILM_YEAR: 2014,
+  FILMS_ON_PAGE: 8,
+  FILMS_IN_SIMILAR: 4,
 };
 
 ReactDOM.render(
   <React.StrictMode>
     <App
-      filmsCount = {Settings.FILMS_ON_PAGE}
-      promoFilmName={Settings.PROMO_FILM_NAME}
-      promoFilmGenre={Settings.PROMO_FILM_GENRE}
-      promoFilmYear={Settings.PROMO_FILM_YEAR}
+      promo={promo}
+      films={films}
+      similarFilms={similarFilms}
+      countOfSimilarFilms={Settings.FILMS_IN_SIMILAR}
+      filmsOnPage={Settings.FILMS_ON_PAGE}
+      favorites={favorites}
     />
   </React.StrictMode>,
   document.getElementById('root'));
