@@ -75,7 +75,7 @@ function StartScreen({films, filmsOnPage, promo}: StartScreenProps): JSX.Element
       </section>
 
       <div className="page-content">
-        <ListOfFilms films={films} filmsOnPage={filmsOnPage} />
+        <ListOfFilms films={films} filmsOnPage={filmsOnPage} isMore />
         <footer className="page-footer">
           <div className="logo">
             <a className="logo__link logo__link--light">

@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 type FilmCardProps = {
   film: Film;
-  updateActiveFilm?: any;
+  updateActiveFilm: any;
 }
 
 function FilmCard({film, updateActiveFilm}: FilmCardProps): JSX.Element {

@@ -1,5 +1,4 @@
 import {Films} from '../../types/films';
-import {useState} from 'react';
 import FilmPreviews from '../film-previews/film-previews';
 
 type ListOfFilmsProps = {
@@ -9,16 +8,6 @@ type ListOfFilmsProps = {
 }
 
 function ListOfFilms({films, filmsOnPage, isMore}: ListOfFilmsProps): JSX.Element {
-  const [, setActiveFilmCard] = useState(0);
-  const updateActiveFilm = (card: number) => {
-    setActiveFilmCard(card);
-  };
-
-  const moreButton = isMore ? (
-    <div className="catalog__more">
-      <button className="catalog__button" type="button">Show more</button>
-    </div>
-  ) : '';
 
   return (
     <section className="catalog">
@@ -58,10 +47,16 @@ function ListOfFilms({films, filmsOnPage, isMore}: ListOfFilmsProps): JSX.Elemen
       </ul>
 
       <div className="catalog__films-list">
-        <FilmPreviews films={films} filmsOnPage={filmsOnPage} updateActiveFilm={updateActiveFilm} />
+        <FilmPreviews films={films} filmsOnPage={filmsOnPage} />
       </div>
 
-      {moreButton}
+      {
+        isMore ? (
+          <div className="catalog__more">
+            <button className="catalog__button" type="button">Show more</button>
+          </div>
+        ) : ''
+      }
     </section>
   );
 }

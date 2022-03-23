@@ -1,7 +1,8 @@
 import {Films} from '../../types/films';
 import {Link, Navigate, useParams} from 'react-router-dom';
-import {AppRoute, Quality} from '../../const';
+import {AppRoute} from '../../const';
 import FilmPreviews from '../film-previews/film-previews';
+import {setQuality} from '../../help-functions';
 
 type MoviePageProps = {
   films: Films;
@@ -16,20 +17,6 @@ function MoviePage({films, similarFilms, countOfSimilarFilms}: MoviePageProps): 
   if (!film) {
     return <Navigate to={AppRoute.Main} />;
   } else {
-    const setQuality = (rating: number) => {
-      if (rating <= 3) {
-        return Quality.Bad;
-      } else if (rating > 3 && rating <=5) {
-        return Quality.Normal;
-      } else if (rating > 5 && rating <= 8) {
-        return Quality.Good;
-      } else if (rating > 8 && rating < 10) {
-        return Quality.VeryGood;
-      } else {
-        return Quality.Awesome;
-      }
-    };
-
     return (
       <>
         <section className="film-card film-card--full">
