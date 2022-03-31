@@ -9,6 +9,7 @@ import Player from '../player/player';
 import NotFound from '../not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
 import {Film, Films} from '../../types/films';
+import {Reviews} from '../../types/reviews';
 
 type AppScreenProps = {
   films: Films;
@@ -17,9 +18,10 @@ type AppScreenProps = {
   countOfSimilarFilms: number;
   filmsOnPage: number;
   promo: Film;
+  reviews: Reviews;
 }
 
-function App({films, filmsOnPage, similarFilms, countOfSimilarFilms,favorites, promo}: AppScreenProps): JSX.Element {
+function App({films, filmsOnPage, similarFilms, countOfSimilarFilms,favorites, promo, reviews}: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
@@ -41,7 +43,7 @@ function App({films, filmsOnPage, similarFilms, countOfSimilarFilms,favorites, p
         />
         <Route
           path={AppRoute.Film}
-          element={<MoviePage films={films} similarFilms={similarFilms} countOfSimilarFilms={countOfSimilarFilms} />}
+          element={<MoviePage films={films} similarFilms={similarFilms} countOfSimilarFilms={countOfSimilarFilms} reviews={reviews} />}
         />
         <Route
           path={AppRoute.AddReview}

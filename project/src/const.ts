@@ -20,3 +20,9 @@ export enum Quality {
   VeryGood = 'VeryGood',
   Awesome = 'Awesome',
 }
+
+export enum MovieTabsName {
+  Overview = 'Overview',
+  Details = 'Details',
+  Reviews = 'Reviews',
+}
