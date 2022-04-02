@@ -4,6 +4,7 @@ import App from './components/app/app';
 import {films, similarFilms} from './mocks/films';
 import {promo} from './mocks/promo';
 import {favorites} from './mocks/favorites';
+import {reviews} from './mocks/reviews';
 
 const Settings = {
   FILMS_ON_PAGE: 8,
@@ -19,6 +20,7 @@ ReactDOM.render(
       countOfSimilarFilms={Settings.FILMS_IN_SIMILAR}
       filmsOnPage={Settings.FILMS_ON_PAGE}
       favorites={favorites}
+      reviews={reviews}
     />
   </React.StrictMode>,
   document.getElementById('root'));
