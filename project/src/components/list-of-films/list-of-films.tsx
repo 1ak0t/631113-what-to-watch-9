@@ -1,7 +1,6 @@
 import FilmPreviews from '../film-previews/film-previews';
 import FilterByGenre from '../filter-by-genre/filter-by-genre';
-import {useSelector} from 'react-redux';
-import {InitialState} from '../../types/state';
+import {useAppSelector} from '../../hooks';
 
 type ListOfFilmsProps = {
   filmsOnPage: number;
@@ -9,7 +8,7 @@ type ListOfFilmsProps = {
 }
 
 function ListOfFilms({filmsOnPage, isMore}: ListOfFilmsProps): JSX.Element {
-  const filteredFilms = useSelector((state: InitialState) => state.filteredFilms);
+  const filteredFilms = useAppSelector((state) => state.filteredFilms);
   return (
     <section className="catalog">
       <h2 className="catalog__title visually-hidden">Catalog</h2>
