@@ -5,7 +5,6 @@ import {InitialState} from '../types/state';
 
 const initialState: InitialState = {
   activeGenre: DEFAULT_GENRE,
-  genres: [DEFAULT_GENRE],
   films: [],
   filteredFilms: [],
 };
@@ -23,8 +22,6 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(getAllFilms, (state, action) => {
       state.films = action.payload;
       state.filteredFilms = state.films;
-      state.films.map((film) => state.genres.push(film.genre));
-      state.genres = Array.from(new Set(state.genres));
     });
 });
 

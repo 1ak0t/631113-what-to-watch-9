@@ -2,6 +2,7 @@ import FilmPreviews from '../film-previews/film-previews';
 import FilterByGenre from '../filter-by-genre/filter-by-genre';
 import {useAppSelector} from '../../hooks';
 import {useState} from 'react';
+import {getFilteredFilms} from '../../store/selectors';
 
 type ListOfFilmsProps = {
   filmsOnPage: number;
@@ -9,7 +10,7 @@ type ListOfFilmsProps = {
 }
 
 function ListOfFilms({filmsOnPage, isMore}: ListOfFilmsProps): JSX.Element {
-  const filteredFilms = useAppSelector((state) => state.filteredFilms);
+  const filteredFilms = useAppSelector(getFilteredFilms);
   const [filmsCount, setFilmsCount] = useState(filmsOnPage);
   return (
     <section className="catalog">
