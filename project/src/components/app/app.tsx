@@ -10,6 +10,9 @@ import NotFound from '../not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
 import {Film, Films} from '../../types/films';
 import {Reviews} from '../../types/reviews';
+import {useDispatch} from 'react-redux';
+import {getAllFilms} from '../../store/actions';
+import {useEffect} from 'react';
 
 type AppScreenProps = {
   films: Films;
@@ -22,6 +25,10 @@ type AppScreenProps = {
 }
 
 function App({films, filmsOnPage, similarFilms, countOfSimilarFilms,favorites, promo, reviews}: AppScreenProps): JSX.Element {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllFilms(films));
+  });
   return (
     <BrowserRouter>
       <Routes>

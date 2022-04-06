@@ -26,3 +26,5 @@ export enum MovieTabsName {
   Details = 'Details',
   Reviews = 'Reviews',
 }
+
+export const DEFAULT_GENRE = 'All Genres';
