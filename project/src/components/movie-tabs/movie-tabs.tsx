@@ -8,11 +8,10 @@ import {Reviews} from '../../types/reviews';
 import {Film} from '../../types/films';
 
 type MovieTabsProps = {
-  reviews: Reviews;
   film: Film;
 }
 
-function MovieTabs({reviews, film}: MovieTabsProps) {
+function MovieTabs({film}: MovieTabsProps) {
   const [activeTab, setActiveTab] = useState('Overview');
 
   const tabClickHandler = (evt: any) => {
@@ -38,7 +37,7 @@ function MovieTabs({reviews, film}: MovieTabsProps) {
       case MovieTabsName.Details:
         return <MovieDetails film={film} />;
       case MovieTabsName.Reviews:
-        return <MovieReviews reviews={reviews} />;
+        return <MovieReviews />;
     }
   };
 

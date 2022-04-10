@@ -2,12 +2,12 @@ import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import {Films} from '../../types/films';
 import FilmPreviews from '../film-previews/film-previews';
+import {useAppSelector} from '../../hooks';
+import {getAllFilms} from '../../store/selectors';
 
-type MyListProps = {
-  favorites: Films;
-}
+function MyList(): JSX.Element {
+  const favorites = useAppSelector(getAllFilms);
 
-function MyList({favorites}: MyListProps): JSX.Element {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">

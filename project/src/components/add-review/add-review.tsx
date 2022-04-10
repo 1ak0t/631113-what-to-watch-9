@@ -2,14 +2,13 @@ import {Films} from '../../types/films';
 import {Link, Navigate, useParams} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import ReviewForm from '../review-form/review-form';
+import {useAppSelector} from '../../hooks';
+import {getAllFilms} from '../../store/selectors';
 
-type ReviewPageProps = {
-  films: Films;
-}
-
-function AddReview({films}: ReviewPageProps): JSX.Element {
+function AddReview(): JSX.Element {
 
   const paramId = Number(useParams().id);
+  const films = useAppSelector(getAllFilms);
   const film = films.find((movie) => movie.id === paramId);
 
   if (!film) {

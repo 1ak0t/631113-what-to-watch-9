@@ -1,11 +1,8 @@
 import {Reviews} from '../../types/reviews';
 import Review from '../review/review';
 
-type MovieReviewsProps = {
-  reviews: Reviews;
-}
+function MovieReviews() {
 
-function MovieReviews({reviews}: MovieReviewsProps) {
   return (
     <div className="film-card__reviews film-card__row">
       <div className="film-card__reviews-col">

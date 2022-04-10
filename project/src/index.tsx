@@ -1,29 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
-import {films, similarFilms} from './mocks/films';
-import {promo} from './mocks/promo';
-import {favorites} from './mocks/favorites';
-import {reviews} from './mocks/reviews';
 import {Provider} from 'react-redux';
 import {store} from './store';
+import ErrorMessage from './components/error-message/error-message';
+import {checkAuthAction, fetchFilmsAction, fetchPromoAction} from './store/api-actions';
+import {useAppSelector} from './hooks';
+import {getAllFilms} from './store/selectors';
+import {getPromo} from './store/selectors';
 
 const Settings = {
   FILMS_ON_PAGE: 8,
   FILMS_IN_SIMILAR: 4,
 };
 
+store.dispatch(fetchFilmsAction());
+store.dispatch(checkAuthAction());
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+      <ErrorMessage />
       <App
-        promo={promo}
-        films={films}
-        similarFilms={similarFilms}
         countOfSimilarFilms={Settings.FILMS_IN_SIMILAR}
         filmsOnPage={Settings.FILMS_ON_PAGE}
-        favorites={favorites}
-        reviews={reviews}
       />
     </Provider>
   </React.StrictMode>,

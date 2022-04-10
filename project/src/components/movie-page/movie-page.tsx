@@ -1,19 +1,17 @@
-import {Films} from '../../types/films';
 import {Link, Navigate, useParams} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import FilmPreviews from '../film-previews/film-previews';
 import MovieTabs from '../movie-tabs/movie-tabs';
-import {Reviews} from '../../types/reviews';
+import {useAppSelector} from '../../hooks';
+import {getAllFilms} from '../../store/selectors';
 
 type MoviePageProps = {
-  films: Films;
-  similarFilms: Films;
   countOfSimilarFilms: number;
-  reviews: Reviews;
 }
 
-function MoviePage({films, similarFilms, countOfSimilarFilms, reviews}: MoviePageProps): JSX.Element {
+function MoviePage({countOfSimilarFilms}: MoviePageProps): JSX.Element {
   const paramId = Number(useParams().id);
+  const films = useAppSelector(getAllFilms);
   const film = films.find((movie) => movie.id === paramId);
 
   if (!film) {
@@ -84,7 +82,7 @@ function MoviePage({films, similarFilms, countOfSimilarFilms, reviews}: MoviePag
               <div className="film-card__poster film-card__poster--big">
                 <img src={film.posterImage} alt={film.name} width="218" height="327"/>
               </div>
-              <MovieTabs reviews={reviews} film={film} />
+              <MovieTabs film={film} />
             </div>
           </div>
         </section>
@@ -94,7 +92,7 @@ function MoviePage({films, similarFilms, countOfSimilarFilms, reviews}: MoviePag
             <h2 className="catalog__title">More like this</h2>
 
             <div className="catalog__films-list">
-              <FilmPreviews films={similarFilms} filmsOnPage={countOfSimilarFilms} />
+              <FilmPreviews filmsOnPage={countOfSimilarFilms} />
             </div>
           </section>
 
