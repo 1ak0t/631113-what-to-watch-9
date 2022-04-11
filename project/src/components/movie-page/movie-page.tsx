@@ -3,7 +3,11 @@ import {AppRoute} from '../../const';
 import FilmPreviews from '../film-previews/film-previews';
 import MovieTabs from '../movie-tabs/movie-tabs';
 import {useAppSelector} from '../../hooks';
-import {getAllFilms} from '../../store/selectors';
+import {getAllFilms, getReviews} from '../../store/selectors';
+import {Films} from '../../types/films';
+import {store} from '../../store';
+import {fetchFilmComments} from '../../store/api-actions';
+import {useEffect} from 'react';
 
 type MoviePageProps = {
   countOfSimilarFilms: number;
@@ -13,6 +17,15 @@ function MoviePage({countOfSimilarFilms}: MoviePageProps): JSX.Element {
   const paramId = Number(useParams().id);
   const films = useAppSelector(getAllFilms);
   const film = films.find((movie) => movie.id === paramId);
+  const similar: Films = [];
+  useEffect(() => {
+    store.dispatch(fetchFilmComments(paramId));
+  },[]);
+
+  const reviews = useAppSelector(getReviews);
+
+  //eslint-disable-next-line no-console
+  console.log(reviews);
 
   if (!film) {
     return <Navigate to={AppRoute.Main} />;
@@ -82,7 +95,7 @@ function MoviePage({countOfSimilarFilms}: MoviePageProps): JSX.Element {
               <div className="film-card__poster film-card__poster--big">
                 <img src={film.posterImage} alt={film.name} width="218" height="327"/>
               </div>
-              <MovieTabs film={film} />
+              <MovieTabs film={film} reviews={reviews} />
             </div>
           </div>
         </section>
@@ -92,7 +105,7 @@ function MoviePage({countOfSimilarFilms}: MoviePageProps): JSX.Element {
             <h2 className="catalog__title">More like this</h2>
 
             <div className="catalog__films-list">
-              <FilmPreviews filmsOnPage={countOfSimilarFilms} />
+              <FilmPreviews films={similar} filmsOnPage={countOfSimilarFilms} />
             </div>
           </section>
 

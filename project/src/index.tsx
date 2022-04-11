@@ -4,10 +4,7 @@ import App from './components/app/app';
 import {Provider} from 'react-redux';
 import {store} from './store';
 import ErrorMessage from './components/error-message/error-message';
-import {checkAuthAction, fetchFilmsAction, fetchPromoAction} from './store/api-actions';
-import {useAppSelector} from './hooks';
-import {getAllFilms} from './store/selectors';
-import {getPromo} from './store/selectors';
+import {checkAuthAction, fetchFilmsAction} from './store/api-actions';
 
 const Settings = {
   FILMS_ON_PAGE: 8,

@@ -1,18 +1,21 @@
 import ListOfFilms from '../list-of-films/list-of-films';
-import {Film, Films} from '../../types/films';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import {store} from '../../store';
 import {fetchPromoAction} from '../../store/api-actions';
 import {useAppSelector} from '../../hooks';
 import {getPromo} from '../../store/selectors';
+import {useEffect} from 'react';
 
 type StartScreenProps = {
   filmsOnPage: number;
 }
 
 function StartScreen({filmsOnPage}: StartScreenProps) {
-  store.dispatch(fetchPromoAction());
+  useEffect(()=> {
+    store.dispatch(fetchPromoAction());
+  }, []);
+
   const promo = useAppSelector(getPromo);
 
   if (promo) {
@@ -100,7 +103,9 @@ function StartScreen({filmsOnPage}: StartScreenProps) {
     );
   }
 
-  return <></>;
+  return (
+    <div>Not downloaded</div>
+  );
 }
 
 export default StartScreen;

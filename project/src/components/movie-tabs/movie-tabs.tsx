@@ -4,14 +4,15 @@ import React from 'react';
 import MovieOverview from '../movie-overview/movie-overview';
 import MovieDetails from '../movie-details/movie-details';
 import MovieReviews from '../movie-reviews/movie-reviews';
-import {Reviews} from '../../types/reviews';
 import {Film} from '../../types/films';
+import {Reviews} from '../../types/reviews';
 
 type MovieTabsProps = {
   film: Film;
+  reviews: Reviews;
 }
 
-function MovieTabs({film}: MovieTabsProps) {
+function MovieTabs({film, reviews}: MovieTabsProps) {
   const [activeTab, setActiveTab] = useState('Overview');
 
   const tabClickHandler = (evt: any) => {
@@ -37,7 +38,7 @@ function MovieTabs({film}: MovieTabsProps) {
       case MovieTabsName.Details:
         return <MovieDetails film={film} />;
       case MovieTabsName.Reviews:
-        return <MovieReviews />;
+        return <MovieReviews reviews={reviews} />;
     }
   };
 

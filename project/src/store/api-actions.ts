@@ -2,11 +2,12 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {Film, Films} from '../types/films';
 import {APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR} from '../const';
 import {api, store} from './index';
-import {getAllFilms, getPromo, requireAuthorization, setError} from './actions';
+import {getAllFilms, getPromo, getReviews, requireAuthorization, setError} from './actions';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
 import {dropToken, saveToken} from '../services/token';
 import {errorHandle} from '../services/error-handle';
+import {Reviews} from '../types/reviews';
 
 export const clearErrorAction = createAsyncThunk(
   'clearError',
@@ -27,7 +28,7 @@ export const fetchFilmsAction = createAsyncThunk(
     } catch (error) {
       errorHandle(error);
     }
-  }
+  },
 );
 
 export const fetchPromoAction = createAsyncThunk(
@@ -39,7 +40,19 @@ export const fetchPromoAction = createAsyncThunk(
     } catch (error) {
       errorHandle(error);
     }
-  }
+  },
+);
+
+export const fetchFilmComments = createAsyncThunk(
+  'fetchComment',
+  async (id: number) => {
+    try {
+      const {data} = await api.get<Reviews>(`${APIRoute.Comments}${id}`);
+      store.dispatch(getReviews(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
 );
 
 export const checkAuthAction = createAsyncThunk(
@@ -52,7 +65,7 @@ export const checkAuthAction = createAsyncThunk(
       errorHandle(error);
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
-  }
+  },
 );
 
 export const loginAction = createAsyncThunk(
@@ -66,7 +79,7 @@ export const loginAction = createAsyncThunk(
       errorHandle(error);
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
-  }
+  },
 );
 
 export const logoutAction = createAsyncThunk(
@@ -79,5 +92,5 @@ export const logoutAction = createAsyncThunk(
     } catch (error) {
       errorHandle(error);
     }
-  }
+  },
 );

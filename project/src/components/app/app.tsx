@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute} from '../../const';
 import StartScreen from '../start-screen/start-screen';
 import SignIn from '../sign-in/sign-in';
 import MyList from '../my-list/my-list';
@@ -8,8 +8,6 @@ import AddReview from '../add-review/add-review';
 import Player from '../player/player';
 import NotFound from '../not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
-import {Film, Films} from '../../types/films';
-import {Reviews} from '../../types/reviews';
 import {useAppSelector} from '../../hooks';
 import {isCheckedAuth} from '../../help-functions';
 import LoadingScreen from '../loading-screen/loading-screen';

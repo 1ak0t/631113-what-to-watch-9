@@ -1,7 +1,11 @@
-import {Reviews} from '../../types/reviews';
 import Review from '../review/review';
+import {Reviews} from '../../types/reviews';
 
-function MovieReviews() {
+type MovieReviewsProps = {
+  reviews: Reviews;
+}
+
+function MovieReviews({reviews}: MovieReviewsProps) {
 
   return (
     <div className="film-card__reviews film-card__row">

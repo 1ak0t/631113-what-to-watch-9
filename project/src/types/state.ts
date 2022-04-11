@@ -1,6 +1,7 @@
 import {store} from '../store';
 import {Film, Films} from './films';
 import {AuthorizationStatus} from '../const';
+import {Reviews} from './reviews';
 
 export type State = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
@@ -12,4 +13,5 @@ export type InitialState = {
   authorizationStatus: AuthorizationStatus;
   error: string;
   isDataLoaded: boolean;
+  filmComments: Reviews;
 }

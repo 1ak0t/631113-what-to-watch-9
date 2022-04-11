@@ -1,6 +1,5 @@
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
-import {Films} from '../../types/films';
 import FilmPreviews from '../film-previews/film-previews';
 import {useAppSelector} from '../../hooks';
 import {getAllFilms} from '../../store/selectors';

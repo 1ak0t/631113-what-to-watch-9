@@ -1,4 +1,3 @@
-import {Films} from '../../types/films';
 import {Link, Navigate, useParams} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import ReviewForm from '../review-form/review-form';

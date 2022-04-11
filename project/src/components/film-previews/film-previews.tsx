@@ -1,7 +1,5 @@
 import {Films} from '../../types/films';
 import FilmCard from '../film-card/film-card';
-import {useAppSelector} from '../../hooks';
-import {getAllFilms} from '../../store/selectors';
 
 type FilmPreviewsProps = {
   films: Films;
