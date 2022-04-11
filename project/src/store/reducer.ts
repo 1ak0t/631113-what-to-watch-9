@@ -1,6 +1,14 @@
 import {AuthorizationStatus, DEFAULT_GENRE} from '../const';
 import {createReducer} from '@reduxjs/toolkit';
-import {changeGenre, getAllFilms, getPromo, getReviews, requireAuthorization, setError} from './actions';
+import {
+  changeGenre, clearUserData,
+  getAccountData,
+  getAllFilms, getFavorites,
+  getPromo,
+  getReviews,
+  requireAuthorization,
+  setError
+} from './actions';
 import {InitialState} from '../types/state';
 
 const initialState: InitialState = {
@@ -12,6 +20,8 @@ const initialState: InitialState = {
   error: '',
   isDataLoaded: false,
   filmComments: [],
+  userAccount: null,
+  favorites: [],
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -32,8 +42,17 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(getPromo, (state, action) => {
       state.promo = action.payload;
     })
+    .addCase(getFavorites, (state, action) => {
+      state.favorites = action.payload;
+    })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(clearUserData, (state, action) => {
+      state.userAccount = null;
+    })
+    .addCase(getAccountData, (state, action) => {
+      state.userAccount = action.payload;
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;

@@ -5,6 +5,14 @@ import {Reviews} from './reviews';
 
 export type State = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export type UserAccount = {
+  id: number;
+  avatarUrl: string;
+  email: string;
+  name: string;
+  token: string;
+}
+
 export type InitialState = {
   activeGenre: string;
   films: Films;
@@ -14,4 +22,6 @@ export type InitialState = {
   error: string;
   isDataLoaded: boolean;
   filmComments: Reviews;
+  userAccount: UserAccount | null;
+  favorites: Films;
 }

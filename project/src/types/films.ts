@@ -19,3 +19,8 @@ export type Film = {
 }
 
 export type Films = Film[];
+
+export type FilmToFavorite = {
+  id: number;
+  status: number;
+}

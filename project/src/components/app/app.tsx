@@ -35,7 +35,7 @@ function App({filmsOnPage, countOfSimilarFilms}: AppScreenProps): JSX.Element {
         />
         <Route
           path={AppRoute.SignIn}
-          element={<SignIn />}
+          element={<SignIn authorizationStatus={authorizationStatus} />}
         />
         <Route
           path={AppRoute.MyList}
@@ -51,7 +51,11 @@ function App({filmsOnPage, countOfSimilarFilms}: AppScreenProps): JSX.Element {
         />
         <Route
           path={AppRoute.AddReview}
-          element={<AddReview />}
+          element={
+            <PrivateRoute authorizationStatus={authorizationStatus}>
+              <AddReview />
+            </PrivateRoute>
+          }
         />
         <Route
           path={AppRoute.Player}

@@ -1,8 +1,17 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {Film, Films} from '../types/films';
+import {Film, Films, FilmToFavorite} from '../types/films';
 import {APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR} from '../const';
 import {api, store} from './index';
-import {getAllFilms, getPromo, getReviews, requireAuthorization, setError} from './actions';
+import {
+  clearUserData,
+  getAccountData,
+  getAllFilms,
+  getFavorites,
+  getPromo,
+  getReviews,
+  requireAuthorization,
+  setError
+} from './actions';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
 import {dropToken, saveToken} from '../services/token';
@@ -55,15 +64,40 @@ export const fetchFilmComments = createAsyncThunk(
   },
 );
 
+export const fetchFavorites = createAsyncThunk(
+  'fetchFavorites',
+  async () => {
+    try {
+      const {data} = await api.get<Films>(APIRoute.Favorites);
+      store.dispatch(getFavorites(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
 export const checkAuthAction = createAsyncThunk(
   'checkAuth',
   async () => {
     try {
-      await api.get(APIRoute.Login);
+      const {data} = await api.get(APIRoute.Login);
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(getAccountData(data));
     } catch(error) {
       errorHandle(error);
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    }
+  },
+);
+
+export const addToFavoriteAction = createAsyncThunk(
+  'addToFavorite',
+  async ({id, status}: FilmToFavorite) => {
+    try {
+      await api.post<FilmToFavorite>(`${APIRoute.Favorites}/${id}/${status}`);
+      store.dispatch(fetchFavorites());
+    } catch (error) {
+      errorHandle(error);
     }
   },
 );
@@ -72,9 +106,11 @@ export const loginAction = createAsyncThunk(
   'login',
   async ({login: email, password}: AuthData) => {
     try {
-      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
+      const {data: {token, id, name, avatarUrl}} = await api.post<UserData>(APIRoute.Login, {email, password});
       saveToken(token);
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(getAccountData({token, id, name, email, avatarUrl}));
+      store.dispatch(fetchFavorites());
     } catch (error) {
       errorHandle(error);
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
@@ -89,6 +125,7 @@ export const logoutAction = createAsyncThunk(
       await api.delete(APIRoute.Logout);
       dropToken();
       store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      store.dispatch(clearUserData);
     } catch (error) {
       errorHandle(error);
     }

@@ -8,6 +8,7 @@ import {Films} from '../../types/films';
 import {store} from '../../store';
 import {fetchFilmComments} from '../../store/api-actions';
 import {useEffect} from 'react';
+import UserBlock from '../user-block/user-block';
 
 type MoviePageProps = {
   countOfSimilarFilms: number;
@@ -49,18 +50,7 @@ function MoviePage({countOfSimilarFilms}: MoviePageProps): JSX.Element {
                 </Link>
               </div>
 
-              <ul className="user-block">
-                <li className="user-block__item">
-                  <div className="user-block__avatar">
-                    <Link to={AppRoute.MyList}>
-                      <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-                    </Link>
-                  </div>
-                </li>
-                <li className="user-block__item">
-                  <a href="#" className="user-block__link">Sign out</a>
-                </li>
-              </ul>
+              <UserBlock />
             </header>
 
             <div className="film-card__wrap">
@@ -111,11 +101,11 @@ function MoviePage({countOfSimilarFilms}: MoviePageProps): JSX.Element {
 
           <footer className="page-footer">
             <div className="logo">
-              <a href="main.html" className="logo__link logo__link--light">
+              <Link to={AppRoute.Main} className="logo__link logo__link--light">
                 <span className="logo__letter logo__letter--1">W</span>
                 <span className="logo__letter logo__letter--2">T</span>
                 <span className="logo__letter logo__letter--3">W</span>
-              </a>
+              </Link>
             </div>
 
             <div className="copyright">

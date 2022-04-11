@@ -1,22 +1,62 @@
 import ListOfFilms from '../list-of-films/list-of-films';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import {store} from '../../store';
-import {fetchPromoAction} from '../../store/api-actions';
+import {addToFavoriteAction, fetchFavorites} from '../../store/api-actions';
 import {useAppSelector} from '../../hooks';
-import {getPromo} from '../../store/selectors';
-import {useEffect} from 'react';
+import {getFavorites, getPromo} from '../../store/selectors';
+import {useEffect, useState} from 'react';
+import UserBlock from '../user-block/user-block';
 
 type StartScreenProps = {
   filmsOnPage: number;
 }
 
 function StartScreen({filmsOnPage}: StartScreenProps) {
-  useEffect(()=> {
-    store.dispatch(fetchPromoAction());
-  }, []);
-
   const promo = useAppSelector(getPromo);
+  const favorites = useAppSelector(getFavorites);
+  const navigate = useNavigate();
+  const [favoriteStatus, setFavoriteStatus] = useState(false);
+
+  useEffect(() => {
+    if (promo) {
+      const favoriteFilm = favorites.find((film) => film.id === promo.id);
+      if (favoriteFilm) {setFavoriteStatus(true);}
+    }
+  });
+
+  const handleFavoriteClick = () => {
+    setFavoriteStatus(!favoriteStatus);
+    if (promo) {
+      store.dispatch(addToFavoriteAction({
+        id: promo.id,
+        status: Number(!favoriteStatus),
+      }));
+    }
+    store.dispatch(fetchFavorites());
+  };
+
+  const getFavoriteButton = () => {
+    if (favoriteStatus) {
+      return (
+        <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteClick}>
+          <svg viewBox="0 0 18 14" width="18" height="14">
+            <use xlinkHref="#in-list"></use>
+          </svg>
+          <span>My list</span>
+        </button>
+      );
+    }
+
+    return (
+      <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteClick}>
+        <svg viewBox="0 0 19 20" width="19" height="20">
+          <use xlinkHref="#add"></use>
+        </svg>
+        <span>My list</span>
+      </button>
+    );
+  };
 
   if (promo) {
     return (
@@ -30,25 +70,14 @@ function StartScreen({filmsOnPage}: StartScreenProps) {
 
           <header className="page-header film-card__head">
             <div className="logo">
-              <a className="logo__link">
+              <Link to={AppRoute.Main} className="logo__link">
                 <span className="logo__letter logo__letter--1">W</span>
                 <span className="logo__letter logo__letter--2">T</span>
                 <span className="logo__letter logo__letter--3">W</span>
-              </a>
+              </Link>
             </div>
 
-            <ul className="user-block">
-              <li className="user-block__item">
-                <Link to={AppRoute.MyList}>
-                  <div className="user-block__avatar">
-                    <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-                  </div>
-                </Link>
-              </li>
-              <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
-              </li>
-            </ul>
+            <UserBlock />
           </header>
 
           <div className="film-card__wrap">
@@ -65,18 +94,13 @@ function StartScreen({filmsOnPage}: StartScreenProps) {
                 </p>
 
                 <div className="film-card__buttons">
-                  <button className="btn btn--play film-card__button" type="button">
+                  <button className="btn btn--play film-card__button" type="button" onClick={() => navigate(AppRoute.Player.slice(0, -3) + promo.id)}>
                     <svg viewBox="0 0 19 19" width="19" height="19">
                       <use xlinkHref="#play-s"></use>
                     </svg>
                     <span>Play</span>
                   </button>
-                  <button className="btn btn--list film-card__button" type="button">
-                    <svg viewBox="0 0 19 20" width="19" height="20">
-                      <use xlinkHref="#add"></use>
-                    </svg>
-                    <span>My list</span>
-                  </button>
+                  {getFavoriteButton()}
                 </div>
               </div>
             </div>
@@ -87,11 +111,11 @@ function StartScreen({filmsOnPage}: StartScreenProps) {
           <ListOfFilms filmsOnPage={filmsOnPage} isMore />
           <footer className="page-footer">
             <div className="logo">
-              <a className="logo__link logo__link--light">
+              <Link to={AppRoute.Main} className="logo__link logo__link--light">
                 <span className="logo__letter logo__letter--1">W</span>
                 <span className="logo__letter logo__letter--2">T</span>
                 <span className="logo__letter logo__letter--3">W</span>
-              </a>
+              </Link>
             </div>
 
             <div className="copyright">

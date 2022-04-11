@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
 import {Provider} from 'react-redux';
 import {store} from './store';
 import ErrorMessage from './components/error-message/error-message';
-import {checkAuthAction, fetchFilmsAction} from './store/api-actions';
+import {checkAuthAction, fetchFavorites, fetchFilmsAction, fetchPromoAction} from './store/api-actions';
 
 const Settings = {
   FILMS_ON_PAGE: 8,
@@ -13,6 +13,8 @@ const Settings = {
 
 store.dispatch(fetchFilmsAction());
 store.dispatch(checkAuthAction());
+store.dispatch(fetchFavorites());
+store.dispatch(fetchPromoAction());
 
 ReactDOM.render(
   <React.StrictMode>

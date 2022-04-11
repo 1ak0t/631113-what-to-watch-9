@@ -5,7 +5,6 @@ export enum AppRoute {
   Film = '/films/:id',
   AddReview = '/films/:id/review',
   Player = '/player/:id',
-  Comments = '/comments/',
 }
 
 export enum AuthorizationStatus {
@@ -35,7 +34,8 @@ export enum APIRoute {
   Promo = '/promo',
   Login = '/login',
   Logout = '/logout',
-  Comments = '/comments/'
+  Comments = '/comments/',
+  Favorites = '/favorite',
 }
 
 export const TIMEOUT_SHOW_ERROR = 2000;
