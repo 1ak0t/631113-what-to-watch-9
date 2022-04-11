@@ -5,7 +5,7 @@ import {
   getAccountData,
   getAllFilms, getFavorites,
   getPromo,
-  getReviews,
+  getReviews, getSimilar,
   requireAuthorization,
   setError
 } from './actions';
@@ -22,6 +22,7 @@ const initialState: InitialState = {
   filmComments: [],
   userAccount: null,
   favorites: [],
+  similar: [],
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -44,6 +45,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(getFavorites, (state, action) => {
       state.favorites = action.payload;
+    })
+    .addCase(getSimilar, (state, action) => {
+      state.similar = action.payload;
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;

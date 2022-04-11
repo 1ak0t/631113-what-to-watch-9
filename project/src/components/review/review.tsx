@@ -1,4 +1,5 @@
 import {ReviewType} from '../../types/reviews';
+import dayjs from 'dayjs';
 
 type ReviewProps = {
   review: ReviewType;
@@ -12,7 +13,7 @@ function Review({review}: ReviewProps) {
 
         <footer className="review__details">
           <cite className="review__author">{review.user.name}</cite>
-          <time className="review__date" dateTime="2016-12-24">{review.date}</time>
+          <time className="review__date" dateTime="2016-12-24">{dayjs(review.date).format('MMMM DD, YYYY')}</time>
         </footer>
       </blockquote>
 

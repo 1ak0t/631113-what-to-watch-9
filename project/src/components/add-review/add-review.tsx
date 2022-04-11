@@ -38,7 +38,7 @@ function AddReview(): JSX.Element {
                   <Link to={AppRoute.Film.slice(0, -3) + film.id} className="breadcrumbs__link">{film.name}</Link>
                 </li>
                 <li className="breadcrumbs__item">
-                  <a className="breadcrumbs__link">Add review</a>
+                  <Link to={AppRoute.AddReview.replace(':id', String(film.id))} className="breadcrumbs__link">Add review</Link>
                 </li>
               </ul>
             </nav>
@@ -51,7 +51,7 @@ function AddReview(): JSX.Element {
         </div>
 
         <div className="add-review">
-          <ReviewForm />
+          <ReviewForm filmId={paramId} />
         </div>
 
       </section>

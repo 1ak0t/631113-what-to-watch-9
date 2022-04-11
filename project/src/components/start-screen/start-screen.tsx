@@ -2,7 +2,7 @@ import ListOfFilms from '../list-of-films/list-of-films';
 import {Link, useNavigate} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import {store} from '../../store';
-import {addToFavoriteAction, fetchFavorites} from '../../store/api-actions';
+import {addToFavoriteAction} from '../../store/api-actions';
 import {useAppSelector} from '../../hooks';
 import {getFavorites, getPromo} from '../../store/selectors';
 import {useEffect, useState} from 'react';
@@ -23,17 +23,16 @@ function StartScreen({filmsOnPage}: StartScreenProps) {
       const favoriteFilm = favorites.find((film) => film.id === promo.id);
       if (favoriteFilm) {setFavoriteStatus(true);}
     }
-  });
+  }, []);
 
   const handleFavoriteClick = () => {
-    setFavoriteStatus(!favoriteStatus);
     if (promo) {
       store.dispatch(addToFavoriteAction({
         id: promo.id,
         status: Number(!favoriteStatus),
       }));
     }
-    store.dispatch(fetchFavorites());
+    setFavoriteStatus(!favoriteStatus);
   };
 
   const getFavoriteButton = () => {

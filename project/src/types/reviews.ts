@@ -10,3 +10,9 @@ export type ReviewType = {
 }
 
 export type Reviews = ReviewType[];
+
+export type Review = {
+  filmId: number;
+  comment: string;
+  rating: number;
+}

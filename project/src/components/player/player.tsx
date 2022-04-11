@@ -9,47 +9,73 @@ function Player(): JSX.Element {
   const films = useAppSelector(getAllFilms);
   const film = films.find((movie) => movie.id === paramId);
 
-  const playButtonRef = useRef<HTMLButtonElement | null>(null);
   const videoPlayerRef = useRef<HTMLVideoElement | null>(null);
+  const progressBarRef = useRef<HTMLProgressElement | null>(null);
+  const progressToggle = useRef<HTMLDivElement | null>(null);
+  const timeLeftBlockRef = useRef<HTMLDivElement | null>(null);
+
+  if (timeLeftBlockRef.current !== null && videoPlayerRef.current !== null) {
+    timeLeftBlockRef.current.textContent = `${videoPlayerRef.current.duration}`;
+  }
 
   const setVideoState = () => {
     if (videoPlayerRef.current !== null) {
-      if (videoPlayerRef.current?.paused) {
-        videoPlayerRef.current?.play();
+      if (videoPlayerRef.current.paused) {
+        videoPlayerRef.current.play();
       } else {
-        videoPlayerRef.current?.pause();
+        videoPlayerRef.current.pause();
       }
     }
   };
 
   const setVideoFullScreen = () => {
     if (videoPlayerRef.current !== null) {
-      if (videoPlayerRef.current?.) {
-        videoPlayerRef.current?.play();
-      } else {
-        videoPlayerRef.current?.pause();
-      }
+      videoPlayerRef.current.requestFullscreen();
+    }
+  };
+
+  const formatVideoTime = (duration: number, current: number) => {
+    const hours = Math.floor((duration - current)/3600);
+    const minutes = Math.floor((duration - current)%3600/60);
+    const seconds = Math.floor((duration - current)%3600%60);
+
+    const hoursDisplay = hours > 0 ? hours : '00';
+    const minutesDisplay = minutes > 0 ? minutes : '00';
+    const secondsDisplay = seconds > 0 ? seconds : '00';
+
+    if (hours === 0) {
+      return `${minutesDisplay}:${secondsDisplay < 10 ? `0${secondsDisplay}` : secondsDisplay}`;
+    }
+
+    return `${hoursDisplay}:${minutesDisplay}:${secondsDisplay < 10 ? `0${secondsDisplay}` : secondsDisplay}`;
+  };
+
+  const updateTimeLine = () => {
+    if (progressBarRef.current !== null && progressToggle.current !== null && videoPlayerRef.current !== null && timeLeftBlockRef.current !== null) {
+      progressBarRef.current.value = (videoPlayerRef.current.currentTime / videoPlayerRef.current.duration * 100);
+      progressToggle.current.style.left = `${videoPlayerRef.current.currentTime / videoPlayerRef.current.duration * 100}%`;
+      timeLeftBlockRef.current.textContent = formatVideoTime(videoPlayerRef.current.duration, videoPlayerRef.current.currentTime);
     }
   };
 
   if (film !== undefined) {
     return (
       <div className="player">
-        <video ref={videoPlayerRef} src={film.videoLink} className="player__video" poster={film.posterImage} autoPlay onClick={setVideoState}></video>
+        <video ref={videoPlayerRef} src={film.videoLink} className="player__video" poster={film.posterImage} autoPlay onClick={setVideoState} onTimeUpdate={updateTimeLine}></video>
 
-        <button type="button" className="player__exit">Exit</button>
+        <button type="button" className="player__exit" onClick={() => window.history.back()}>Exit</button>
 
         <div className="player__controls">
           <div className="player__controls-row">
             <div className="player__time">
-              <progress className="player__progress" value="30" max="100"></progress>
-              <div className="player__toggler" style={{left: '30%'}}>Toggler</div>
+              <progress ref={progressBarRef} className="player__progress" value="0" max="100"></progress>
+              <div ref={progressToggle} className="player__toggler" style={{left: '0%'}}>Toggler</div>
             </div>
-            <div className="player__time-value">1:30:29</div>
+            <div ref={timeLeftBlockRef} className="player__time-value"></div>
           </div>
 
           <div className="player__controls-row">
-            <button ref={playButtonRef} type="button" className="player__play" onClick={setVideoState}>
+            <button type="button" className="player__play" onClick={setVideoState}>
               <svg viewBox="0 0 19 19" width="19" height="19">
                 <use xlinkHref="#play-s"></use>
               </svg>

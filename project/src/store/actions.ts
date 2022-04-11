@@ -10,6 +10,7 @@ export const getAllFilms = createAction<Films>('getAllFilms');
 export const getPromo = createAction<Film>('getPromo');
 export const getReviews = createAction<Reviews>('getReviews');
 export const getFavorites = createAction<Films>('getFavorites');
+export const getSimilar = createAction<Films>('getSimilar');
 export const getAccountData = createAction<UserAccount>('getAccountData');
 export const requireAuthorization = createAction<AuthorizationStatus>('requireAuthorization');
 export const clearUserData = createAction<UserData>('clearUserData');

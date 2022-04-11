@@ -8,7 +8,7 @@ import {
   getAllFilms,
   getFavorites,
   getPromo,
-  getReviews,
+  getReviews, getSimilar,
   requireAuthorization,
   setError
 } from './actions';
@@ -16,7 +16,7 @@ import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
 import {dropToken, saveToken} from '../services/token';
 import {errorHandle} from '../services/error-handle';
-import {Reviews} from '../types/reviews';
+import {Review, Reviews} from '../types/reviews';
 
 export const clearErrorAction = createAsyncThunk(
   'clearError',
@@ -76,6 +76,18 @@ export const fetchFavorites = createAsyncThunk(
   },
 );
 
+export const fetchSimilar = createAsyncThunk(
+  'fetchSimilar',
+  async (id : number) => {
+    try {
+      const {data} = await api.get<Films>(`${APIRoute.Films}/${id}/similar`);
+      store.dispatch(getSimilar(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
 export const checkAuthAction = createAsyncThunk(
   'checkAuth',
   async () => {
@@ -96,6 +108,17 @@ export const addToFavoriteAction = createAsyncThunk(
     try {
       await api.post<FilmToFavorite>(`${APIRoute.Favorites}/${id}/${status}`);
       store.dispatch(fetchFavorites());
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const addReviewAction = createAsyncThunk(
+  'addReview',
+  async ({filmId, comment, rating}: Review) => {
+    try {
+      await api.post<Review>(`${APIRoute.Comments}${filmId}`, {comment, rating});
     } catch (error) {
       errorHandle(error);
     }

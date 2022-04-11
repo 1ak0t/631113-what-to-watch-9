@@ -24,7 +24,7 @@ function MovieTabs({film, reviews}: MovieTabsProps) {
   const getMovieTabs = (name: string, clickHandler: (evt: any) => void) => {
     const activeClass = name === activeTab ? 'film-nav__item--active' : '';
     return (
-      <li className={`film-nav__item ${activeClass}`} onClick={clickHandler}>
+      <li className={`film-nav__item ${activeClass}`} onClick={clickHandler} key={name}>
         <a className="film-nav__link">{name}</a>
       </li>
     );

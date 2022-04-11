@@ -24,4 +24,5 @@ export type InitialState = {
   filmComments: Reviews;
   userAccount: UserAccount | null;
   favorites: Films;
+  similar: Films;
 }
