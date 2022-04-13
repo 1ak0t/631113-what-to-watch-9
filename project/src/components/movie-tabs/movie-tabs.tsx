@@ -4,15 +4,15 @@ import React from 'react';
 import MovieOverview from '../movie-overview/movie-overview';
 import MovieDetails from '../movie-details/movie-details';
 import MovieReviews from '../movie-reviews/movie-reviews';
-import {Reviews} from '../../types/reviews';
 import {Film} from '../../types/films';
+import {Reviews} from '../../types/reviews';
 
 type MovieTabsProps = {
-  reviews: Reviews;
   film: Film;
+  reviews: Reviews;
 }
 
-function MovieTabs({reviews, film}: MovieTabsProps) {
+function MovieTabs({film, reviews}: MovieTabsProps) {
   const [activeTab, setActiveTab] = useState('Overview');
 
   const tabClickHandler = (evt: any) => {
@@ -24,7 +24,7 @@ function MovieTabs({reviews, film}: MovieTabsProps) {
   const getMovieTabs = (name: string, clickHandler: (evt: any) => void) => {
     const activeClass = name === activeTab ? 'film-nav__item--active' : '';
     return (
-      <li className={`film-nav__item ${activeClass}`} onClick={clickHandler}>
+      <li className={`film-nav__item ${activeClass}`} onClick={clickHandler} key={name}>
         <a className="film-nav__link">{name}</a>
       </li>
     );

@@ -1,20 +1,80 @@
-import {Films} from '../../types/films';
-import {Link, Navigate, useParams} from 'react-router-dom';
-import {AppRoute} from '../../const';
+import {Link, Navigate, useNavigate, useParams} from 'react-router-dom';
+import {AppRoute, AuthorizationStatus} from '../../const';
 import FilmPreviews from '../film-previews/film-previews';
 import MovieTabs from '../movie-tabs/movie-tabs';
-import {Reviews} from '../../types/reviews';
+import {useAppSelector} from '../../hooks';
+import {getAllFilms, getAuthorizationStatus, getFavorites, getReviews, getSimilar} from '../../store/selectors';
+import {store} from '../../store';
+import {addToFavoriteAction, fetchFilmComments, fetchSimilar} from '../../store/api-actions';
+import {useEffect, useState} from 'react';
+import UserBlock from '../user-block/user-block';
+import {Film} from '../../types/films';
 
 type MoviePageProps = {
-  films: Films;
-  similarFilms: Films;
   countOfSimilarFilms: number;
-  reviews: Reviews;
 }
 
-function MoviePage({films, similarFilms, countOfSimilarFilms, reviews}: MoviePageProps): JSX.Element {
+function MoviePage({countOfSimilarFilms}: MoviePageProps): JSX.Element {
+  const navigate = useNavigate();
   const paramId = Number(useParams().id);
+  const films = useAppSelector(getAllFilms);
+  const reviews = useAppSelector(getReviews);
+  const favorites = useAppSelector(getFavorites);
+  const authStatus = useAppSelector(getAuthorizationStatus);
   const film = films.find((movie) => movie.id === paramId);
+  const similar = useAppSelector(getSimilar);
+  const [favoriteStatus, setFavoriteStatus] = useState(false);
+
+  useEffect(() => {
+    store.dispatch(fetchFilmComments(paramId));
+    store.dispatch(fetchSimilar(paramId));
+    if (film) {
+      const favoriteFilm = favorites.find((movie) => movie.id === film.id);
+      if (favoriteFilm) {setFavoriteStatus(true);}
+    }
+  },[]);
+
+  const handleFavoriteClick = () => {
+    if (film) {
+      store.dispatch(addToFavoriteAction({
+        id: film.id,
+        status: Number(!favoriteStatus),
+      }));
+    }
+    setFavoriteStatus(!favoriteStatus);
+  };
+
+  const getFavoriteButton = () => {
+    if (authStatus === AuthorizationStatus.Auth) {
+      if (favoriteStatus) {
+        return (
+          <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteClick}>
+            <svg viewBox="0 0 18 14" width="18" height="14">
+              <use xlinkHref="#in-list"></use>
+            </svg>
+            <span>My list</span>
+          </button>
+        );
+      }
+
+      return (
+        <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteClick}>
+          <svg viewBox="0 0 19 20" width="19" height="20">
+            <use xlinkHref="#add"></use>
+          </svg>
+          <span>My list</span>
+        </button>
+      );
+    }
+  };
+
+  const getReviewButton = (movie: Film) => {
+    if (authStatus === AuthorizationStatus.Auth) {
+      return (
+        <Link to={AppRoute.AddReview.replace(':id', String(movie.id))} className="btn film-card__button">Add review</Link>
+      );
+    }
+  };
 
   if (!film) {
     return <Navigate to={AppRoute.Main} />;
@@ -38,18 +98,7 @@ function MoviePage({films, similarFilms, countOfSimilarFilms, reviews}: MoviePag
                 </Link>
               </div>
 
-              <ul className="user-block">
-                <li className="user-block__item">
-                  <div className="user-block__avatar">
-                    <Link to={AppRoute.MyList}>
-                      <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-                    </Link>
-                  </div>
-                </li>
-                <li className="user-block__item">
-                  <a href="#" className="user-block__link">Sign out</a>
-                </li>
-              </ul>
+              <UserBlock />
             </header>
 
             <div className="film-card__wrap">
@@ -61,19 +110,14 @@ function MoviePage({films, similarFilms, countOfSimilarFilms, reviews}: MoviePag
                 </p>
 
                 <div className="film-card__buttons">
-                  <button className="btn btn--play film-card__button" type="button">
+                  <button className="btn btn--play film-card__button" type="button" onClick={() => navigate(AppRoute.Player.slice(0, -3) + film.id)}>
                     <svg viewBox="0 0 19 19" width="19" height="19">
                       <use xlinkHref="#play-s"></use>
                     </svg>
                     <span>Play</span>
                   </button>
-                  <button className="btn btn--list film-card__button" type="button">
-                    <svg viewBox="0 0 19 20" width="19" height="20">
-                      <use xlinkHref="#add"></use>
-                    </svg>
-                    <span>My list</span>
-                  </button>
-                  <Link to={AppRoute.AddReview.replace(':id', String(film.id))} className="btn film-card__button">Add review</Link>
+                  {getFavoriteButton()}
+                  {getReviewButton(film)}
                 </div>
               </div>
             </div>
@@ -84,7 +128,7 @@ function MoviePage({films, similarFilms, countOfSimilarFilms, reviews}: MoviePag
               <div className="film-card__poster film-card__poster--big">
                 <img src={film.posterImage} alt={film.name} width="218" height="327"/>
               </div>
-              <MovieTabs reviews={reviews} film={film} />
+              <MovieTabs film={film} reviews={reviews} />
             </div>
           </div>
         </section>
@@ -94,17 +138,17 @@ function MoviePage({films, similarFilms, countOfSimilarFilms, reviews}: MoviePag
             <h2 className="catalog__title">More like this</h2>
 
             <div className="catalog__films-list">
-              <FilmPreviews films={similarFilms} filmsOnPage={countOfSimilarFilms} />
+              <FilmPreviews films={similar} filmsOnPage={countOfSimilarFilms}/>
             </div>
           </section>
 
           <footer className="page-footer">
             <div className="logo">
-              <a href="main.html" className="logo__link logo__link--light">
+              <Link to={AppRoute.Main} className="logo__link logo__link--light">
                 <span className="logo__letter logo__letter--1">W</span>
                 <span className="logo__letter logo__letter--2">T</span>
                 <span className="logo__letter logo__letter--3">W</span>
-              </a>
+              </Link>
             </div>
 
             <div className="copyright">

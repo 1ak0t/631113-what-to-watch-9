@@ -1,13 +1,21 @@
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
-import {Films} from '../../types/films';
 import FilmPreviews from '../film-previews/film-previews';
+import {useAppSelector} from '../../hooks';
+import {getFavorites} from '../../store/selectors';
+import UserBlock from '../user-block/user-block';
+import {useEffect} from 'react';
+import {store} from '../../store';
+import {fetchFavorites} from '../../store/api-actions';
 
-type MyListProps = {
-  favorites: Films;
-}
+function MyList(): JSX.Element {
 
-function MyList({favorites}: MyListProps): JSX.Element {
+  useEffect(() => {
+    store.dispatch(fetchFavorites);
+  }, []);
+
+  const favorites = useAppSelector(getFavorites);
+
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -21,16 +29,7 @@ function MyList({favorites}: MyListProps): JSX.Element {
 
         <h1 className="page-title user-page__title">My list</h1>
 
-        <ul className="user-block">
-          <li className="user-block__item">
-            <div className="user-block__avatar">
-              <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-            </div>
-          </li>
-          <li className="user-block__item">
-            <a className="user-block__link">Sign out</a>
-          </li>
-        </ul>
+        <UserBlock />
       </header>
 
       <section className="catalog">
@@ -43,11 +42,11 @@ function MyList({favorites}: MyListProps): JSX.Element {
 
       <footer className="page-footer">
         <div className="logo">
-          <a href="main.html" className="logo__link logo__link--light">
+          <Link to={AppRoute.Main} className="logo__link logo__link--light">
             <span className="logo__letter logo__letter--1">W</span>
             <span className="logo__letter logo__letter--2">T</span>
             <span className="logo__letter logo__letter--3">W</span>
-          </a>
+          </Link>
         </div>
 
         <div className="copyright">

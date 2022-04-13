@@ -1,4 +1,5 @@
 import {Quality} from './const';
+import {AuthorizationStatus} from './const';
 
 export const setQuality = (rating: number) => {
   if (rating <= 3) {
@@ -13,3 +14,6 @@ export const setQuality = (rating: number) => {
     return Quality.Awesome;
   }
 };
+
+export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
+  authorizationStatus === AuthorizationStatus.Unknown;
