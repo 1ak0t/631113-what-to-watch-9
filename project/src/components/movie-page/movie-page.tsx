@@ -45,25 +45,27 @@ function MoviePage({countOfSimilarFilms}: MoviePageProps): JSX.Element {
   };
 
   const getFavoriteButton = () => {
-    if (favoriteStatus) {
+    if (authStatus === AuthorizationStatus.Auth) {
+      if (favoriteStatus) {
+        return (
+          <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteClick}>
+            <svg viewBox="0 0 18 14" width="18" height="14">
+              <use xlinkHref="#in-list"></use>
+            </svg>
+            <span>My list</span>
+          </button>
+        );
+      }
+
       return (
         <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteClick}>
-          <svg viewBox="0 0 18 14" width="18" height="14">
-            <use xlinkHref="#in-list"></use>
+          <svg viewBox="0 0 19 20" width="19" height="20">
+            <use xlinkHref="#add"></use>
           </svg>
           <span>My list</span>
         </button>
       );
     }
-
-    return (
-      <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteClick}>
-        <svg viewBox="0 0 19 20" width="19" height="20">
-          <use xlinkHref="#add"></use>
-        </svg>
-        <span>My list</span>
-      </button>
-    );
   };
 
   const getReviewButton = (movie: Film) => {

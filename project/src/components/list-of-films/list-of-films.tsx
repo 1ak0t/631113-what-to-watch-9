@@ -1,7 +1,7 @@
 import FilmPreviews from '../film-previews/film-previews';
 import FilterByGenre from '../filter-by-genre/filter-by-genre';
 import {useAppSelector} from '../../hooks';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {getFilteredFilms} from '../../store/selectors';
 
 type ListOfFilmsProps = {
@@ -12,6 +12,17 @@ type ListOfFilmsProps = {
 function ListOfFilms({filmsOnPage, isMore}: ListOfFilmsProps): JSX.Element {
   const filteredFilms = useAppSelector(getFilteredFilms);
   const [filmsCount, setFilmsCount] = useState(filmsOnPage);
+  const [moreButton, setMoreButton] = useState(isMore);
+
+  useEffect(() => {
+    if (filmsCount > filteredFilms.length) {
+      setMoreButton(false);
+    }
+  }, [filmsCount]);
+
+  const handleMoreButtonClick = () => {
+    setFilmsCount(filmsCount + 8);
+  };
   return (
     <section className="catalog">
       <h2 className="catalog__title visually-hidden">Catalog</h2>
@@ -21,9 +32,9 @@ function ListOfFilms({filmsOnPage, isMore}: ListOfFilmsProps): JSX.Element {
       </div>
 
       {
-        isMore ? (
+        moreButton ? (
           <div className="catalog__more">
-            <button className="catalog__button" type="button" onClick={() => setFilmsCount(filmsCount + 8)}>Show more</button>
+            <button className="catalog__button" type="button" onClick={handleMoreButtonClick}>Show more</button>
           </div>
         ) : ''
       }

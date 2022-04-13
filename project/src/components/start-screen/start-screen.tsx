@@ -1,10 +1,10 @@
 import ListOfFilms from '../list-of-films/list-of-films';
 import {Link, useNavigate} from 'react-router-dom';
-import {AppRoute} from '../../const';
+import {AppRoute, AuthorizationStatus} from '../../const';
 import {store} from '../../store';
 import {addToFavoriteAction} from '../../store/api-actions';
 import {useAppSelector} from '../../hooks';
-import {getFavorites, getPromo} from '../../store/selectors';
+import {getAuthorizationStatus, getFavorites, getPromo} from '../../store/selectors';
 import {useEffect, useState} from 'react';
 import UserBlock from '../user-block/user-block';
 
@@ -15,6 +15,7 @@ type StartScreenProps = {
 function StartScreen({filmsOnPage}: StartScreenProps) {
   const promo = useAppSelector(getPromo);
   const favorites = useAppSelector(getFavorites);
+  const authStatus = useAppSelector(getAuthorizationStatus);
   const navigate = useNavigate();
   const [favoriteStatus, setFavoriteStatus] = useState(false);
 
@@ -36,25 +37,27 @@ function StartScreen({filmsOnPage}: StartScreenProps) {
   };
 
   const getFavoriteButton = () => {
-    if (favoriteStatus) {
+    if (authStatus === AuthorizationStatus.Auth) {
+      if (favoriteStatus) {
+        return (
+          <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteClick}>
+            <svg viewBox="0 0 18 14" width="18" height="14">
+              <use xlinkHref="#in-list"></use>
+            </svg>
+            <span>My list</span>
+          </button>
+        );
+      }
+
       return (
         <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteClick}>
-          <svg viewBox="0 0 18 14" width="18" height="14">
-            <use xlinkHref="#in-list"></use>
+          <svg viewBox="0 0 19 20" width="19" height="20">
+            <use xlinkHref="#add"></use>
           </svg>
           <span>My list</span>
         </button>
       );
     }
-
-    return (
-      <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteClick}>
-        <svg viewBox="0 0 19 20" width="19" height="20">
-          <use xlinkHref="#add"></use>
-        </svg>
-        <span>My list</span>
-      </button>
-    );
   };
 
   if (promo) {
