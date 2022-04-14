@@ -1,5 +1,6 @@
 import {Film} from '../../types/films';
 import {useEffect, useRef, useState} from 'react';
+import {LATENCY_BEFORE_PLAY_PREVIEW} from '../../const';
 
 type PreviewVideoPlayerProps = {
   film: Film;
@@ -13,7 +14,7 @@ function PreviewVideoPlayer({film}: PreviewVideoPlayerProps) {
   const playVideo = () => {
     timer = setTimeout(() => {
       setVideoPlay(true);
-    }, 1000);
+    }, LATENCY_BEFORE_PLAY_PREVIEW);
   };
 
   const stopVideo = () => {
