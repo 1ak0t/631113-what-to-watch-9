@@ -3,7 +3,7 @@ import {store} from '../../store';
 import {addReviewAction} from '../../store/api-actions';
 import {MouseEvent} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {AppRoute} from '../../const';
+import {AppRoute, REVIEW_MAX_LENGTH, REVIEW_MIN_LENGTH} from '../../const';
 
 type ReviewFormProps = {
   filmId: number;
@@ -19,7 +19,7 @@ function ReviewForm({filmId} : ReviewFormProps): JSX.Element {
   const reviewChangeHandler = (evt: ChangeEvent<HTMLTextAreaElement>) => {
     const {value} = evt.target;
     setComment(value);
-    if (value.length > 50 && value.length < 400 && rating !== 0) {
+    if (value.length > REVIEW_MIN_LENGTH && value.length < REVIEW_MAX_LENGTH && rating !== 0) {
       setButtonState(false);
     } else {
       setButtonState(true);

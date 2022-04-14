@@ -45,3 +45,7 @@ export enum HTTP_CODE {
   UNAUTHORIZED = 401,
   NOT_FOUND = 404,
 }
+
+export const REVIEW_MIN_LENGTH = 50;
+export const REVIEW_MAX_LENGTH = 400;
+export const LATENCY_BEFORE_PLAY_PREVIEW = 1000;
